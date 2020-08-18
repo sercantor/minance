@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ShowExpenseDialog extends StatefulWidget {
   @override
@@ -99,6 +100,8 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                           expenseProvider.dropDownExpenseType);
                       expenseProvider
                           .updateAmountList(int.parse(amountController.text));
+                      expenseProvider.updateDaySpent(
+                          DateFormat.MMMEd().format(DateTime.now()));
                       Navigator.of(context).pop();
                     }
                   },

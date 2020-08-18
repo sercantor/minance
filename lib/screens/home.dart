@@ -40,17 +40,23 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(7.0),
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return _expenseListBuilder(
-                        context,
-                        index,
-                        expenseProvider.expenseTypeList,
-                        expenseProvider.expenseAmountList);
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(),
-                  itemCount: expenseProvider.expenseTypeList.length),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ListView.separated(
+                    reverse: true,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return _expenseListBuilder(
+                          context,
+                          index,
+                          expenseProvider.expenseTypeList,
+                          expenseProvider.expenseAmountList,
+                          expenseProvider.daySpent);
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(),
+                    itemCount: expenseProvider.expenseTypeList.length),
+              ),
             ),
           ),
         ],
@@ -59,8 +65,12 @@ class HomePage extends StatelessWidget {
   }
 }
 
-_expenseListBuilder(BuildContext context, int index,
-    List<String> expenseTypeList, List<int> expenseAmountList) {
+_expenseListBuilder(
+    BuildContext context,
+    int index,
+    List<String> expenseTypeList,
+    List<int> expenseAmountList,
+    List<String> daySpent) {
   String imageUrl;
   //image display logic
   switch (expenseTypeList[index]) {
@@ -81,7 +91,7 @@ _expenseListBuilder(BuildContext context, int index,
   return Stack(
     children: [
       Container(
-        height: MediaQuery.of(context).copyWith().size.height / 6,
+        height: MediaQuery.of(context).copyWith().size.height / 5,
         decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -111,6 +121,12 @@ _expenseListBuilder(BuildContext context, int index,
                 child: Text(
                   'Amount: ₺${expenseAmountList[index]}',
                   style: TextStyles.regularTextStyle,
+                ),
+              ),
+              Container(
+                child: Text(
+                  'Spent at ${daySpent[index]}',
+                  style: TextStyles.subHeaderTextStyle,
                 ),
               ),
             ],
