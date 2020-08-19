@@ -39,6 +39,16 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  removeFromExpenseTypeList(int index) {
+    _expenseTypeList.removeAt(index);
+    notifyListeners();
+  }
+
+  removeFromAmountList(int index) {
+    _expenseAmountList.removeAt(index);
+    notifyListeners();
+  }
+
   updateDropdownExpenseType(String newValue) {
     _dropdownExpenseType = newValue;
     notifyListeners();

@@ -1,14 +1,59 @@
+import 'package:minance/screens/expense_details.dart';
 import 'package:minance/widgets/show_expense_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
+import 'package:minance/widgets/expense_list_builder.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.deepOrange,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 10.0),
+                  ),
+                ],
+              ),
+              child: Text(
+                'Detailed View',
+                style: TextStyles.drawerHeaderTextStyle,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Expense Details',
+                style: TextStyles.drawerItemTextStyle,
+              ),
+              onTap: () {
+                final expenseProvider =
+                    Provider.of<ExpenseProvider>(context, listen: false);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider.value(
+                      value: expenseProvider,
+                      child: ExpenseDetails(),
+                    ),
+                  ),
+                );
+              },
+            ),
+            Divider(),
+          ],
+        ),
+      ),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -37,24 +82,41 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Visibility(
+            visible: expenseProvider.expenseTypeList.isEmpty ||
+                expenseProvider.expenseAmountList.isEmpty,
+            child: Expanded(
+              child: Center(
+                child: Text(
+                  'There are no expenses added, yet.',
+                  style: TextStyles.subHeaderTextStyle,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(7.0),
               child: Align(
                 alignment: Alignment.topCenter,
-                child: ListView.separated(
+                child: ListView.builder(
                     reverse: true,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return _expenseListBuilder(
-                          context,
-                          index,
-                          expenseProvider.expenseTypeList,
-                          expenseProvider.expenseAmountList,
-                          expenseProvider.daySpent);
+                      return Dismissible(
+                        key: UniqueKey(),
+                        onDismissed: (direction) {
+                          expenseProvider.removeFromAmountList(index);
+                          expenseProvider.removeFromExpenseTypeList(index);
+                        },
+                        child: expenseListBuilder(
+                            context,
+                            index,
+                            expenseProvider.expenseTypeList,
+                            expenseProvider.expenseAmountList,
+                            expenseProvider.daySpent),
+                      );
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(),
                     itemCount: expenseProvider.expenseTypeList.length),
               ),
             ),
@@ -63,85 +125,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-_expenseListBuilder(
-    BuildContext context,
-    int index,
-    List<String> expenseTypeList,
-    List<int> expenseAmountList,
-    List<String> daySpent) {
-  String imageUrl;
-  //image display logic
-  switch (expenseTypeList[index]) {
-    case 'Food':
-      imageUrl = 'assets/img/food.png';
-      break;
-    case 'Insurance':
-      imageUrl = 'assets/img/insurance.png';
-      break;
-    case 'Pet':
-      imageUrl = 'assets/img/dog.png';
-      break;
-    case 'Other':
-      imageUrl = 'assets/img/money.png';
-      break;
-  }
-
-  return Stack(
-    children: [
-      Container(
-        height: MediaQuery.of(context).copyWith().size.height / 5,
-        decoration: BoxDecoration(
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 10.0),
-            ),
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.pink, Colors.red]),
-        ),
-        child: Container(
-          margin: EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
-          constraints: BoxConstraints.expand(),
-          child: Column(
-            children: [
-              Container(
-                child: Text(
-                  '${expenseTypeList[index]}',
-                  style: TextStyles.headerTextStyle,
-                ),
-              ),
-              Container(
-                child: Text(
-                  'Amount: ₺${expenseAmountList[index]}',
-                  style: TextStyles.regularTextStyle,
-                ),
-              ),
-              Container(
-                child: Text(
-                  'Spent at ${daySpent[index]}',
-                  style: TextStyles.subHeaderTextStyle,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Container(
-        margin: new EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 0.0),
-        alignment: FractionalOffset.centerLeft,
-        child: Image(
-          image: AssetImage(imageUrl),
-          height: 92.0,
-          width: 92.0,
-        ),
-      ),
-    ],
-  );
 }

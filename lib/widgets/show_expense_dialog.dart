@@ -10,56 +10,50 @@ class ShowExpenseDialog extends StatefulWidget {
 }
 
 class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController dateTimeController =
+      TextEditingController(text: DateFormat('MMMEd').format(DateTime.now()));
   @override
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
-    final TextEditingController amountController = TextEditingController();
+    DateTime selectedDate = DateTime.now();
+
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(2012),
+          lastDate: DateTime(2101));
+      if (picked != null && picked != selectedDate)
+        setState(() {
+          selectedDate = picked;
+          dateTimeController.text = DateFormat('MMMEd').format(picked);
+        });
+    }
 
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
-        padding: EdgeInsets.all(20.0),
-        height: MediaQuery.of(context).copyWith().size.height / 3,
+        padding: EdgeInsets.fromLTRB(20.0, 100.0, 20.0, 10.0),
+        height: MediaQuery.of(context).copyWith().size.height / 1.5,
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).copyWith().size.height / 40,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Expense Type',
+            //expense type
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 150,
+                child: DropdownButtonFormField<String>(
                   style: TextStyles.subHeaderTextStyle,
-                ),
-                Text(
-                  'Expense Amount',
-                  style: TextStyles.subHeaderTextStyle,
-                ),
-              ],
-            ),
-            Divider(),
-            SizedBox(
-              height: MediaQuery.of(context).copyWith().size.height / 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DropdownButton<String>(
                   value: expenseProvider.dropDownExpenseType,
-                  elevation: 16,
-                  onChanged: (String newValue) {
-                    expenseProvider.updateDropdownExpenseType(newValue);
-                  },
-                  style: TextStyle(color: Colors.blueAccent),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.blueAccent,
-                  ),
-                  //when clicking other, it should turn to textformfield
+                  decoration: InputDecoration(
+                      labelText: 'Expense Type',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyles.labelTextStyle),
+                  onChanged: (String newValue) =>
+                      expenseProvider.updateDropdownExpenseType(newValue),
                   items: <String>['Food', 'Insurance', 'Pet', 'Other']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
@@ -68,42 +62,71 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                     );
                   }).toList(),
                 ),
-                SizedBox(
-                  width: 100,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: amountController,
-                  ),
+              ),
+            ),
+            //expense amount
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 150,
+                child: TextFormField(
+                  autofocus: false,
+                  style: TextStyles.subHeaderTextStyle,
+                  decoration: InputDecoration(
+                      labelText: 'Expense Amount',
+                      labelStyle: TextStyles.labelTextStyle,
+                      border: OutlineInputBorder()),
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  controller: amountController,
                 ),
-              ],
+              ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).copyWith().size.height / 50,
+            //expense date
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 150,
+                child: TextFormField(
+                  showCursor: false,
+                  style: TextStyles.subHeaderTextStyle,
+                  controller: dateTimeController,
+                  enableInteractiveSelection: false,
+                  decoration: InputDecoration(
+                      labelText: 'Date',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyles.labelTextStyle),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _selectDate(context);
+                  },
+                ),
+              ),
             ),
+            SizedBox(height: 50.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FlatButton(
-                    child: Text(
-                      'Cancel',
-                      style: TextStyles.cancelButtonTextStyle,
-                    ),
-                    onPressed: () => Navigator.of(context).pop()),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyles.cancelButtonTextStyle,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
                 FlatButton(
                   child: Text(
                     'OK',
                     style: TextStyles.okButtonTextStyle,
                   ),
                   onPressed: () {
-                    if (int.parse(amountController.text) > 0) {
+                    if (int.parse(amountController.text) > 0)
                       expenseProvider.updateExpenseTypeList(
                           expenseProvider.dropDownExpenseType);
-                      expenseProvider
-                          .updateAmountList(int.parse(amountController.text));
-                      expenseProvider.updateDaySpent(
-                          DateFormat.MMMEd().format(DateTime.now()));
-                      Navigator.of(context).pop();
-                    }
+                    expenseProvider
+                        .updateAmountList(int.parse(amountController.text));
+                    expenseProvider.updateDaySpent(dateTimeController.text);
+                    Navigator.pop(context);
                   },
                 ),
               ],

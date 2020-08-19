@@ -15,22 +15,43 @@ class TextStyles {
     fontWeight: FontWeight.w400,
   );
 
-  static const TextStyle subHeaderTextStyle = const TextStyle(
+  static const TextStyle drawerHeaderTextStyle = const TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 14.0,
+    color: Colors.black87,
+    fontSize: 20.0,
+    fontWeight: FontWeight.w600,
   );
+
+  static const TextStyle drawerItemTextStyle = const TextStyle(
+    fontFamily: 'Poppins',
+    color: Colors.black87,
+    fontSize: 15.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  static const TextStyle subHeaderTextStyle = const TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 14.0,
+      fontWeight: FontWeight.w600,
+      color: Colors.black87);
+
+  static const TextStyle labelTextStyle = const TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 14.0,
+      fontWeight: FontWeight.w600,
+      color: Colors.grey);
 
   static const TextStyle cancelButtonTextStyle = const TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 14.0,
+    fontSize: 15.0,
     fontWeight: FontWeight.w600,
     color: Colors.grey,
   );
 
   static const TextStyle okButtonTextStyle = const TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 14.0,
+    fontSize: 18.0,
     fontWeight: FontWeight.w600,
-    color: Colors.blue,
+    color: Colors.black87,
   );
 }
