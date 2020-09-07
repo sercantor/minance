@@ -11,6 +11,7 @@ class ExpenseDetails extends StatelessWidget {
         title: Text(
           'minance',
           style: TextStyles.headerTextStyle,
+          softWrap: false,
         ),
         shadowColor: Colors.black12,
         backgroundColor: Colors.deepOrange,
