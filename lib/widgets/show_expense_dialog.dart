@@ -120,7 +120,7 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                     style: TextStyles.okButtonTextStyle,
                   ),
                   onPressed: () {
-                    if (int.parse(amountController.text) > 0)
+                    if (int.parse(amountController.text) > 1)
                       expenseProvider.updateExpenseTypeList(
                           expenseProvider.dropDownExpenseType);
                     expenseProvider
