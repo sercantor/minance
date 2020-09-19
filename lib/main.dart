@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
           create: (context) => ExpenseProvider(),
         ),
         ChangeNotifierProvider<NavigationProvider>(
-            create: (_) => NavigationProvider()),
+          create: (_) => NavigationProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

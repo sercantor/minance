@@ -15,7 +15,7 @@ class BottomNavigation extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.details),
-          title: Text('Income'),
+          title: Text('Stats'),
         ),
       ],
       selectedItemColor: Colors.amber[800],

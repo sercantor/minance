@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:minance/providers/expense_page_provider.dart';
@@ -41,8 +43,12 @@ class ExpenseListView extends StatelessWidget {
                       ),
                       key: UniqueKey(),
                       onDismissed: (direction) {
+                        //messy, bad really really bad
+                        expenseProvider.subtractFromChartMap(index);
                         expenseProvider.removeFromAmountList(index);
                         expenseProvider.removeFromExpenseTypeList(index);
+                        expenseProvider.removeDaySpent(index);
+                        expenseProvider.removeMonthSpent(index);
                       },
                       child: expenseListBuilder(
                           context,

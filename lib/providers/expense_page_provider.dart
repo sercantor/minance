@@ -5,6 +5,8 @@ class ExpenseProvider with ChangeNotifier {
   List<String> _expenseTypeList;
   List<int> _expenseAmountList;
   List<String> _daySpent;
+  List<String> _monthSpent;
+  Map _chartMap;
 
   //constructor
   ExpenseProvider() {
@@ -12,12 +14,16 @@ class ExpenseProvider with ChangeNotifier {
     _expenseTypeList = List<String>();
     _expenseAmountList = List<int>();
     _daySpent = List<String>();
+    _monthSpent = List<String>();
+    _chartMap = Map();
   }
 
   String get dropDownExpenseType => _dropdownExpenseType;
   List<String> get expenseTypeList => _expenseTypeList;
   List<int> get expenseAmountList => _expenseAmountList;
   List<String> get daySpent => _daySpent;
+  List<String> get monthSpent => _monthSpent;
+  Map get chartMap => _chartMap;
 
   setDropdownExpenseType() {
     _dropdownExpenseType = 'Food';
@@ -31,11 +37,27 @@ class ExpenseProvider with ChangeNotifier {
 
   updateAmountList(int value) {
     _expenseAmountList.add(value);
+    print(_expenseAmountList);
     notifyListeners();
   }
 
   updateDaySpent(String value) {
     _daySpent.add(value);
+    notifyListeners();
+  }
+
+  updateMonthSpent(String value) {
+    _monthSpent.add(value);
+    print('$_monthSpent');
+    notifyListeners();
+  }
+
+  updateChartMap(String month, int amount) {
+    // _chartMap.putIfAbsent(month, () => amount);
+    // _chartMap.forEach((key, value) {});
+    _chartMap.update(month, (existingValue) => existingValue + amount,
+        ifAbsent: () => amount);
+    print(chartMap);
     notifyListeners();
   }
 
@@ -47,6 +69,21 @@ class ExpenseProvider with ChangeNotifier {
   removeFromAmountList(int index) {
     _expenseAmountList.removeAt(index);
     notifyListeners();
+  }
+
+  removeDaySpent(int index) {
+    _daySpent.removeAt(index);
+    notifyListeners();
+  }
+
+  removeMonthSpent(int index) {
+    _monthSpent.removeAt(index);
+    notifyListeners();
+  }
+
+  subtractFromChartMap(int index) {
+    _chartMap.update(_monthSpent[index],
+        (existingValue) => existingValue - _expenseAmountList[index]);
   }
 
   updateDropdownExpenseType(String newValue) {
