@@ -1,3 +1,4 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:minance/models/expense_series.dart';
@@ -16,7 +17,7 @@ class StatPage extends StatelessWidget {
           expenseMonth: expenseProvider.monthSpent[i],
           expenseAmount:
               expenseProvider.chartMap[expenseProvider.monthSpent[i]],
-          barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+          barColor: charts.ColorUtil.fromDartColor(Colors.deepOrange),
         )
     ]);
     var series = [
@@ -26,6 +27,14 @@ class StatPage extends StatelessWidget {
         domainFn: (ExpenseSeries series, _) => series.expenseMonth,
         measureFn: (ExpenseSeries series, _) => series.expenseAmount,
         colorFn: (ExpenseSeries series, _) => series.barColor,
+        labelAccessorFn: (ExpenseSeries series, i) =>
+            '${expenseProvider.chartMap[expenseProvider.monthSpent[i]]}',
+        insideLabelStyleAccessorFn: (ExpenseSeries series, _) {
+          return new charts.TextStyleSpec(color: MaterialPalette.black);
+        },
+        outsideLabelStyleAccessorFn: (ExpenseSeries series, _) {
+          return new charts.TextStyleSpec(color: MaterialPalette.black);
+        },
       )
     ];
     return Container(
@@ -36,7 +45,10 @@ class StatPage extends StatelessWidget {
         animate: true,
         // Add the series legend behavior to the chart to turn on series legends.
         // By default the legend will display above the chart.
-        behaviors: [new charts.SeriesLegend()],
+        behaviors: [
+          charts.SeriesLegend(),
+        ],
+        barRendererDecorator: new charts.BarLabelDecorator<String>(),
       ),
     );
     // child: Text('${expenseProvider.expenseAmountList}'));
