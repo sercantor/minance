@@ -37,20 +37,29 @@ class StatPage extends StatelessWidget {
         },
       )
     ];
-    return Container(
-      height: 400,
-      padding: EdgeInsets.all(20),
-      child: charts.BarChart(
-        series,
-        animate: true,
-        // Add the series legend behavior to the chart to turn on series legends.
-        // By default the legend will display above the chart.
-        behaviors: [
-          charts.SeriesLegend(),
-        ],
-        barRendererDecorator: new charts.BarLabelDecorator<String>(),
-      ),
-    );
+    return expenseProvider.expenseAmountList.isEmpty
+        ? Container(
+            alignment: Alignment.topCenter,
+            padding: EdgeInsets.only(top: 140.0),
+            child: Text(
+              'No stats to be shown',
+              style: TextStyles.subHeaderTextStyle,
+            ),
+          )
+        : Container(
+            height: 400,
+            padding: EdgeInsets.all(20),
+            child: charts.BarChart(
+              series,
+              animate: true,
+              // Add the series legend behavior to the chart to turn on series legends.
+              // By default the legend will display above the chart.
+              behaviors: [
+                charts.SeriesLegend(),
+              ],
+              barRendererDecorator: new charts.BarLabelDecorator<String>(),
+            ),
+          );
     // child: Text('${expenseProvider.expenseAmountList}'));
   }
 }

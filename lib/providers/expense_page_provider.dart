@@ -6,7 +6,7 @@ class ExpenseProvider with ChangeNotifier {
   List<int> _expenseAmountList;
   List<String> _daySpent;
   List<String> _monthSpent;
-  Map _chartMap;
+  Map<String, int> _chartMap;
 
   //constructor
   ExpenseProvider() {

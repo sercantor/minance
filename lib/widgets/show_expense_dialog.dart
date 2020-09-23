@@ -133,8 +133,9 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                       expenseProvider.updateMonthSpent(
                           dateTimeController.text.substring(5, 8));
                       expenseProvider.updateChartMap(
-                          dateTimeController.text.substring(5, 8),
-                          int.parse(amountController.text));
+                        dateTimeController.text.substring(5, 8),
+                        int.parse(amountController.text),
+                      );
                       // navigationProvider.setSelectedIndex(0);
                     }
                     Navigator.pop(context);
