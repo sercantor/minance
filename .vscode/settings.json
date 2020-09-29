@@ -1,0 +1,45 @@
+{
+    "workbench.startupEditor": "newUntitledFile",
+    "vscode-neovim.neovimExecutablePaths.linux": "/home/sercantor/Downloads/nvim.appimage",
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            120
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": false
+    },
+
+    "workbench.iconTheme": "material-icon-theme",
+    "window.zoomLevel": 1,
+    "editor.cursorBlinking": "solid",
+    "workbench.colorTheme": "Monokai",
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    },
+    "liveServer.settings.donotShowInfoMsg": true,
+    "vscode-neovim.highlightGroups.highlights": {
+    
+    
+        "Directory": "vim",
+        "IncSearch": {
+            "backgroundColor": "theme.editor.findMatchBackground",
+            "borderColor": "theme.editor.findMatchBorder"
+        },
+        "Search": {
+            "backgroundColor": "theme.editor.findMatchHighlightBackground",
+            "borderColor": "theme.editor.findMatchHighlightBorder"
+        },
+        "Visual": {
+            "backgroundColor": "theme.editor.selectionBackground"
+        },
+        "Conceal": "vim",
+        "Substitute": "vim"
+    },
+    
+}

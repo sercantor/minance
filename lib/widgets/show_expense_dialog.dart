@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minance/providers/expense_page_provider.dart';
+import 'package:minance/providers/navigation_provider.dart';
 import 'package:minance/theme.dart';
+import 'package:minance/widgets/stat_page.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -17,6 +19,7 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
     DateTime selectedDate = DateTime.now();
+    // final navigationProvider = Provider.of<NavigationProvider>(context);
 
     Future<void> _selectDate(BuildContext context) async {
       final DateTime picked = await showDatePicker(
@@ -120,12 +123,21 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                     style: TextStyles.okButtonTextStyle,
                   ),
                   onPressed: () {
-                    if (int.parse(amountController.text) > 0)
+                    //TODO: parse doesn't work, 0 or negative values breaks the app
+                    if (int.parse(amountController.text) > 1) {
                       expenseProvider.updateExpenseTypeList(
                           expenseProvider.dropDownExpenseType);
-                    expenseProvider
-                        .updateAmountList(int.parse(amountController.text));
-                    expenseProvider.updateDaySpent(dateTimeController.text);
+                      expenseProvider
+                          .updateAmountList(int.parse(amountController.text));
+                      expenseProvider.updateDaySpent(dateTimeController.text);
+                      expenseProvider.updateMonthSpent(
+                          dateTimeController.text.substring(5, 8));
+                      expenseProvider.updateChartMap(
+                        dateTimeController.text.substring(5, 8),
+                        int.parse(amountController.text),
+                      );
+                      // navigationProvider.setSelectedIndex(0);
+                    }
                     Navigator.pop(context);
                   },
                 ),
