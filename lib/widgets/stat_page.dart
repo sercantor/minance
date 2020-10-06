@@ -37,16 +37,8 @@ class StatPage extends StatelessWidget {
         },
       )
     ];
-    return expenseProvider.expenseAmountList.isEmpty
+    return (expenseProvider.expenseAmountList.isNotEmpty)
         ? Container(
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.only(top: 140.0),
-            child: Text(
-              'No stats to be shown',
-              style: TextStyles.subHeaderTextStyle,
-            ),
-          )
-        : Container(
             height: 400,
             padding: EdgeInsets.all(20),
             child: charts.BarChart(
@@ -59,6 +51,10 @@ class StatPage extends StatelessWidget {
               ],
               barRendererDecorator: new charts.BarLabelDecorator<String>(),
             ),
+          )
+        : Text(
+            'No stats to be shown.',
+            style: TextStyles.subHeaderTextStyle,
           );
     // child: Text('${expenseProvider.expenseAmountList}'));
   }

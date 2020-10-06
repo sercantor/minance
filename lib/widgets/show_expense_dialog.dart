@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minance/providers/expense_page_provider.dart';
-import 'package:minance/providers/navigation_provider.dart';
 import 'package:minance/theme.dart';
-import 'package:minance/widgets/stat_page.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -15,11 +13,18 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateTimeController =
       TextEditingController(text: DateFormat('MMMEd').format(DateTime.now()));
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    dateTimeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
     DateTime selectedDate = DateTime.now();
-    // final navigationProvider = Provider.of<NavigationProvider>(context);
 
     Future<void> _selectDate(BuildContext context) async {
       final DateTime picked = await showDatePicker(
