@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
+import 'package:minance/widgets/show_expense_dialog.dart';
+import 'package:provider/provider.dart';
 
 Widget expenseListBuilder(
-    BuildContext context,
-    int index,
-    List<String> expenseTypeList,
-    List<int> expenseAmountList,
-    List<String> daySpent) {
+  BuildContext context,
+  int index,
+  List<String> expenseTypeList,
+  List<int> expenseAmountList,
+  List<String> daySpent,
+  List<String> expenseId,
+) {
   String imageUrl;
   //image display logic
   switch (expenseTypeList[index]) {
@@ -79,6 +84,31 @@ Widget expenseListBuilder(
             height: 92.0,
             width: 92.0,
           ),
+        ),
+        GestureDetector(
+          child: Container(
+            margin: new EdgeInsets.fromLTRB(0.0, 15.0, 15.0, 0.0),
+            alignment: FractionalOffset.centerLeft,
+            child: Icon(
+              Icons.rowing,
+              size: 35.0,
+            ),
+          ),
+          onTap: () {
+            final expenseProvider =
+                Provider.of<ExpenseProvider>(context, listen: false);
+            showDialog(
+              context: context,
+              builder: (_) {
+                return ChangeNotifierProvider.value(
+                  value: expenseProvider,
+                  child: ShowExpenseDialog(
+                      expenseProvider.expenseAmountList[index],
+                      expenseProvider.expenseId[index]),
+                );
+              },
+            );
+          },
         ),
       ],
     ),

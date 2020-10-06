@@ -3,16 +3,28 @@ import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class ShowExpenseDialog extends StatefulWidget {
   @override
   _ShowExpenseDialogState createState() => _ShowExpenseDialogState();
+
+  final String expenseId;
+  final int amountSpent;
+  final String expenseType;
+  ShowExpenseDialog([this.amountSpent, this.expenseId, this.expenseType]);
 }
 
 class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateTimeController =
       TextEditingController(text: DateFormat('MMMEd').format(DateTime.now()));
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -129,11 +141,18 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                   ),
                   onPressed: () {
                     //TODO: parse doesn't work, 0 or negative values breaks the app
+                    //TODO: have to pass id to all functions here! but edit works
                     if (int.parse(amountController.text) > 1) {
+                      //don't add if id exists
+                      if (!expenseProvider.expenseId
+                          .contains(widget.expenseId)) {
+                        expenseProvider.addExpenseId(Uuid().v4());
+                      }
                       expenseProvider.updateExpenseTypeList(
-                          expenseProvider.dropDownExpenseType);
-                      expenseProvider
-                          .updateAmountList(int.parse(amountController.text));
+                          expenseProvider.dropDownExpenseType,
+                          widget.expenseId);
+                      expenseProvider.updateAmountList(
+                          int.parse(amountController.text), widget.expenseId);
                       expenseProvider.updateDaySpent(dateTimeController.text);
                       expenseProvider.updateMonthSpent(
                           dateTimeController.text.substring(5, 8));

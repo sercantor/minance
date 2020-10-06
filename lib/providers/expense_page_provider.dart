@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 class ExpenseProvider with ChangeNotifier {
   String _dropdownExpenseType;
@@ -7,6 +8,7 @@ class ExpenseProvider with ChangeNotifier {
   List<String> _daySpent;
   List<String> _monthSpent;
   Map<String, int> _chartMap;
+  List<String> _expenseId;
 
   //constructor
   ExpenseProvider() {
@@ -16,6 +18,7 @@ class ExpenseProvider with ChangeNotifier {
     _daySpent = List<String>();
     _monthSpent = List<String>();
     _chartMap = Map();
+    _expenseId = List<String>();
   }
 
   String get dropDownExpenseType => _dropdownExpenseType;
@@ -24,19 +27,35 @@ class ExpenseProvider with ChangeNotifier {
   List<String> get daySpent => _daySpent;
   List<String> get monthSpent => _monthSpent;
   Map get chartMap => _chartMap;
+  List<String> get expenseId => _expenseId;
 
   setDropdownExpenseType() {
     _dropdownExpenseType = 'Food';
   }
 
-  updateExpenseTypeList(String value) {
+  addExpenseId(String id) {
+    _expenseId.add(id);
+    print(id);
+    notifyListeners();
+  }
+
+  updateExpenseTypeList(String value, String id) {
+    if (_expenseId.contains(id)) {
+      _expenseTypeList[_expenseId.indexOf(id)] = value;
+    } else {
+      _expenseTypeList.add(value);
+    }
     _expenseTypeList.add(value);
     print('$_expenseTypeList');
     notifyListeners();
   }
 
-  updateAmountList(int value) {
-    _expenseAmountList.add(value);
+  updateAmountList(int value, String id) {
+    if (_expenseId.contains(id)) {
+      _expenseAmountList[_expenseId.indexOf(id)] = value;
+    } else {
+      _expenseAmountList.add(value);
+    }
     print(_expenseAmountList);
     notifyListeners();
   }

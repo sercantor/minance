@@ -36,14 +36,16 @@ class ExpenseListView extends StatelessWidget {
                         expenseProvider.removeMonthSpent(index);
                       },
                       child: expenseListBuilder(
-                          context,
-                          index,
-                          expenseProvider.expenseTypeList,
-                          expenseProvider.expenseAmountList,
-                          expenseProvider.daySpent),
+                        context,
+                        index,
+                        expenseProvider.expenseTypeList,
+                        expenseProvider.expenseAmountList,
+                        expenseProvider.daySpent,
+                        expenseProvider.expenseId,
+                      ),
                     );
                   },
-                  itemCount: expenseProvider.expenseTypeList.length),
+                  itemCount: expenseProvider.expenseId.length),
             ),
           )
         : Text(
