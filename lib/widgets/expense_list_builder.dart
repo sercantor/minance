@@ -88,10 +88,11 @@ Widget expenseListBuilder(
         GestureDetector(
           child: Container(
             margin: new EdgeInsets.fromLTRB(0.0, 15.0, 15.0, 0.0),
-            alignment: FractionalOffset.centerLeft,
+            alignment: FractionalOffset.centerRight,
             child: Icon(
-              Icons.rowing,
-              size: 35.0,
+              Icons.edit,
+              color: Colors.white70,
+              size: 28.0,
             ),
           ),
           onTap: () {
@@ -103,8 +104,10 @@ Widget expenseListBuilder(
                 return ChangeNotifierProvider.value(
                   value: expenseProvider,
                   child: ShowExpenseDialog(
-                      expenseProvider.expenseAmountList[index],
-                      expenseProvider.expenseId[index]),
+                    expenseProvider.expenseAmountList[index],
+                    expenseProvider.expenseId[index],
+                    expenseProvider.daySpent[index],
+                  ),
                 );
               },
             );

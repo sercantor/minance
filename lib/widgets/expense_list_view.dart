@@ -10,7 +10,8 @@ class ExpenseListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
-    return (expenseProvider.expenseAmountList.isNotEmpty)
+
+    return (expenseProvider.expenseId.length != 0)
         ? Padding(
             padding: const EdgeInsets.all(10.0),
             child: Align(
@@ -30,10 +31,15 @@ class ExpenseListView extends StatelessWidget {
                       key: UniqueKey(),
                       onDismissed: (direction) {
                         expenseProvider.subtractFromChartMap(index);
-                        expenseProvider.removeFromAmountList(index);
-                        expenseProvider.removeFromExpenseTypeList(index);
-                        expenseProvider.removeDaySpent(index);
-                        expenseProvider.removeMonthSpent(index);
+                        expenseProvider.removeFromAmountList(
+                            index, expenseProvider.expenseId[index]);
+                        expenseProvider.removeFromExpenseTypeList(
+                            index, expenseProvider.expenseId[index]);
+                        expenseProvider.removeMonthSpent(
+                            index, expenseProvider.expenseId[index]);
+                        expenseProvider.removeDaySpent(
+                            index, expenseProvider.expenseId[index]);
+                        expenseProvider.removeExpenseId(index);
                       },
                       child: expenseListBuilder(
                         context,

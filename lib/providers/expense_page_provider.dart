@@ -45,7 +45,6 @@ class ExpenseProvider with ChangeNotifier {
     } else {
       _expenseTypeList.add(value);
     }
-    _expenseTypeList.add(value);
     print('$_expenseTypeList');
     notifyListeners();
   }
@@ -60,43 +59,63 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  updateDaySpent(String value) {
-    _daySpent.add(value);
+  updateDaySpent(String value, String id) {
+    if (_expenseId.contains(id)) {
+      _daySpent[_expenseId.indexOf(id)] = value;
+    } else {
+      _daySpent.add(value);
+    }
     notifyListeners();
   }
 
-  updateMonthSpent(String value) {
-    _monthSpent.add(value);
-    print('$_monthSpent');
+  updateMonthSpent(String value, String id) {
+    if (_expenseId.contains(id)) {
+      _monthSpent[_expenseId.indexOf(id)] = value;
+    } else {
+      _monthSpent.add(value);
+    }
     notifyListeners();
   }
 
-  updateChartMap(String month, int amount) {
-    // _chartMap.putIfAbsent(month, () => amount);
-    // _chartMap.forEach((key, value) {});
+  updateChartMap(String month, int amount, String id) {
     _chartMap.update(month, (existingValue) => existingValue + amount,
         ifAbsent: () => amount);
     print(chartMap);
     notifyListeners();
   }
 
-  removeFromExpenseTypeList(int index) {
-    _expenseTypeList.removeAt(index);
+  removeFromExpenseTypeList(int index, String id) {
+    if (_expenseId.contains(id)) {
+      _expenseTypeList.removeAt(index);
+    }
     notifyListeners();
   }
 
-  removeFromAmountList(int index) {
-    _expenseAmountList.removeAt(index);
+  removeFromAmountList(int index, String id) {
+    if (_expenseId.contains(id)) {
+      _expenseAmountList.removeAt(index);
+    }
     notifyListeners();
   }
 
-  removeDaySpent(int index) {
-    _daySpent.removeAt(index);
+  removeDaySpent(int index, String id) {
+    if (_expenseId.contains(id)) {
+      _daySpent.removeAt(index);
+    }
     notifyListeners();
   }
 
-  removeMonthSpent(int index) {
-    _monthSpent.removeAt(index);
+  removeMonthSpent(int index, String id) {
+    if (_expenseId.contains(id)) {
+      _monthSpent.removeAt(index);
+    }
+    print('LENGHT OF EXPENSEID IS: ${_expenseId.length}');
+    notifyListeners();
+  }
+
+  removeExpenseId(int index) {
+    print('removing expenseid index: $index, $_expenseId');
+    _expenseId.removeAt(index);
     notifyListeners();
   }
 

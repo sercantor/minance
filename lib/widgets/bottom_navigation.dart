@@ -11,11 +11,11 @@ class BottomNavigation extends StatelessWidget {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.attach_money),
-          title: Text('Expenses'),
+          label: 'Expenses',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.details),
-          title: Text('Stats'),
+          label: 'Stats',
         ),
       ],
       selectedItemColor: Colors.amber[800],

@@ -12,17 +12,30 @@ class ShowExpenseDialog extends StatefulWidget {
   final String expenseId;
   final int amountSpent;
   final String expenseType;
-  ShowExpenseDialog([this.amountSpent, this.expenseId, this.expenseType]);
+  final String daySpent;
+  ShowExpenseDialog([
+    this.amountSpent,
+    this.expenseId,
+    this.expenseType,
+    this.daySpent,
+  ]);
 }
 
 class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
-  final TextEditingController amountController = TextEditingController();
-  final TextEditingController dateTimeController =
+  final amountController = TextEditingController();
+  final dateTimeController =
       TextEditingController(text: DateFormat('MMMEd').format(DateTime.now()));
 
   @override
   void initState() {
-    // TODO: implement initState
+    //many null checks, this isn't the right way to do this probably, but I'm gettin bored
+    if (widget.amountSpent != null) {
+      amountController.text = widget.amountSpent.toString();
+    }
+    if (widget.daySpent != null) {
+      print('debug with print the best');
+      dateTimeController.text = widget.daySpent;
+    }
     super.initState();
   }
 
@@ -153,14 +166,16 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                           widget.expenseId);
                       expenseProvider.updateAmountList(
                           int.parse(amountController.text), widget.expenseId);
-                      expenseProvider.updateDaySpent(dateTimeController.text);
+                      expenseProvider.updateDaySpent(
+                          dateTimeController.text, widget.expenseId);
                       expenseProvider.updateMonthSpent(
-                          dateTimeController.text.substring(5, 8));
+                          dateTimeController.text.substring(5, 8),
+                          widget.expenseId);
                       expenseProvider.updateChartMap(
                         dateTimeController.text.substring(5, 8),
                         int.parse(amountController.text),
+                        widget.expenseId,
                       );
-                      // navigationProvider.setSelectedIndex(0);
                     }
                     Navigator.pop(context);
                   },
