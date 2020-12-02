@@ -10,13 +10,8 @@ class BottomNavigation extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.attach_money),
-          label: 'Expenses',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.details),
-          label: 'Stats',
-        ),
+            icon: Icon(Icons.attach_money), label: 'Expenses'),
+        BottomNavigationBarItem(icon: Icon(Icons.details), label: 'Stats'),
       ],
       selectedItemColor: Colors.amber[800],
       currentIndex: navigationProvider.selectedIndex,

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:minance/models/expense_model.dart';
 import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
 import 'package:minance/widgets/show_expense_dialog.dart';
 import 'package:provider/provider.dart';
 
 Widget expenseListBuilder(
-  BuildContext context,
-  int index,
-  List<String> expenseTypeList,
-  List<int> expenseAmountList,
-  List<String> daySpent,
-  List<String> expenseId,
-) {
+    BuildContext context, int index, List<Expense> expenseList) {
   String imageUrl;
   //image display logic
-  switch (expenseTypeList[index]) {
+  switch (expenseList[index].expenseType) {
     case 'Food':
       imageUrl = 'assets/img/food.png';
       break;
@@ -45,8 +40,8 @@ Widget expenseListBuilder(
             ],
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topRight, end: Alignment.bottomLeft,
+                // I have no idea why this is giving me an error
                 colors: [Colors.pink, Colors.red]),
           ),
           child: Container(
@@ -56,19 +51,19 @@ Widget expenseListBuilder(
               children: [
                 Container(
                   child: Text(
-                    '${expenseTypeList[index]}',
+                    '${expenseList[index].expenseType}',
                     style: TextStyles.headerTextStyle,
                   ),
                 ),
                 Container(
                   child: Text(
-                    'Amount: ₺${expenseAmountList[index]}',
+                    'Amount: ₺${expenseList[index].expenseAmount}',
                     style: TextStyles.regularTextStyle,
                   ),
                 ),
                 Container(
                   child: Text(
-                    'Spent at ${daySpent[index]}',
+                    'Spent at ${expenseList[index].daySpent}',
                     style: TextStyles.subHeaderTextStyle,
                   ),
                 ),
@@ -104,10 +99,7 @@ Widget expenseListBuilder(
                 return ChangeNotifierProvider.value(
                   value: expenseProvider,
                   child: ShowExpenseDialog(
-                    expenseProvider.expenseAmountList[index],
-                    expenseProvider.expenseId[index],
-                    expenseProvider.daySpent[index],
-                  ),
+                      expenseProvider.expenseList[index], index),
                 );
               },
             );

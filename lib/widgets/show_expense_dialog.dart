@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minance/models/expense_model.dart';
 import 'package:minance/providers/expense_page_provider.dart';
 import 'package:minance/theme.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,9 @@ class ShowExpenseDialog extends StatefulWidget {
   @override
   _ShowExpenseDialogState createState() => _ShowExpenseDialogState();
 
-  final String expenseId;
-  final int amountSpent;
-  final String expenseType;
-  final String daySpent;
-  ShowExpenseDialog([
-    this.amountSpent,
-    this.expenseId,
-    this.expenseType,
-    this.daySpent,
-  ]);
+  final Expense expense;
+  final int index;
+  ShowExpenseDialog([this.expense, this.index]);
 }
 
 class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
@@ -29,12 +23,12 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
   @override
   void initState() {
     //many null checks, this isn't the right way to do this probably, but I'm gettin bored
-    if (widget.amountSpent != null) {
-      amountController.text = widget.amountSpent.toString();
+    if (widget.expense?.expenseAmount != null) {
+      amountController.text = widget.expense.expenseAmount.toString();
     }
-    if (widget.daySpent != null) {
+    if (widget.expense?.daySpent != null) {
       print('debug with print the best');
-      dateTimeController.text = widget.daySpent;
+      dateTimeController.text = widget.expense.daySpent;
     }
     super.initState();
   }
@@ -153,28 +147,21 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                     style: TextStyles.okButtonTextStyle,
                   ),
                   onPressed: () {
+                    // expenseProvider.expenseList.forEach((element) {
+                    //   print(
+                    //       '${element.daySpent}\n ${element.expenseAmount}\n ${element.id}');
+                    // });
                     //TODO: parse doesn't work, 0 or negative values breaks the app
                     //TODO: have to pass id to all functions here! but edit works
                     if (int.parse(amountController.text) > 1) {
-                      //don't add if id exists
-                      if (!expenseProvider.expenseId
-                          .contains(widget.expenseId)) {
-                        expenseProvider.addExpenseId(Uuid().v4());
-                      }
-                      expenseProvider.updateExpenseTypeList(
-                          expenseProvider.dropDownExpenseType,
-                          widget.expenseId);
-                      expenseProvider.updateAmountList(
-                          int.parse(amountController.text), widget.expenseId);
-                      expenseProvider.updateDaySpent(
-                          dateTimeController.text, widget.expenseId);
-                      expenseProvider.updateMonthSpent(
-                          dateTimeController.text.substring(5, 8),
-                          widget.expenseId);
-                      expenseProvider.updateChartMap(
-                        dateTimeController.text.substring(5, 8),
-                        int.parse(amountController.text),
-                        widget.expenseId,
+                      expenseProvider.addToList(
+                        Expense(
+                          daySpent: dateTimeController.text,
+                          expenseAmount: int.parse(amountController.text),
+                          expenseType: expenseProvider.dropDownExpenseType,
+                          monthSpent: dateTimeController.text.substring(5, 8),
+                        ),
+                        widget.index,
                       );
                     }
                     Navigator.pop(context);
