@@ -12,11 +12,11 @@ class StatPage extends StatelessWidget {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
     List<ExpenseSeries> data = List<ExpenseSeries>();
     data.addAll([
-      for (int i = 0; i < expenseProvider.expenseAmountList.length; i++)
+      for (int i = 0; i < expenseProvider.expenseList.length; i++)
         ExpenseSeries(
-          expenseMonth: expenseProvider.monthSpent[i],
+          expenseMonth: expenseProvider.expenseList[i].monthSpent,
           expenseAmount:
-              expenseProvider.chartMap[expenseProvider.monthSpent[i]],
+              expenseProvider.expenseList[i].toMap()['expenseAmount'],
           barColor: charts.ColorUtil.fromDartColor(Colors.deepOrange),
         )
     ]);
@@ -28,7 +28,7 @@ class StatPage extends StatelessWidget {
         measureFn: (ExpenseSeries series, _) => series.expenseAmount,
         colorFn: (ExpenseSeries series, _) => series.barColor,
         labelAccessorFn: (ExpenseSeries series, i) =>
-            '${expenseProvider.chartMap[expenseProvider.monthSpent[i]]}',
+            expenseProvider.expenseList[i].toMap()['expenseAmount'].toString(),
         insideLabelStyleAccessorFn: (ExpenseSeries series, _) {
           return new charts.TextStyleSpec(color: MaterialPalette.black);
         },
@@ -37,16 +37,8 @@ class StatPage extends StatelessWidget {
         },
       )
     ];
-    return expenseProvider.expenseAmountList.isEmpty
+    return (expenseProvider.expenseList.isNotEmpty)
         ? Container(
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.only(top: 140.0),
-            child: Text(
-              'No stats to be shown',
-              style: TextStyles.subHeaderTextStyle,
-            ),
-          )
-        : Container(
             height: 400,
             padding: EdgeInsets.all(20),
             child: charts.BarChart(
@@ -59,6 +51,10 @@ class StatPage extends StatelessWidget {
               ],
               barRendererDecorator: new charts.BarLabelDecorator<String>(),
             ),
+          )
+        : Text(
+            'No stats to be shown.',
+            style: TextStyles.subHeaderTextStyle,
           );
     // child: Text('${expenseProvider.expenseAmountList}'));
   }

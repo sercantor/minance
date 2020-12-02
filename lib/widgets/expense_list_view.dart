@@ -10,23 +10,10 @@ class ExpenseListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expenseProvider = Provider.of<ExpenseProvider>(context);
-    return Column(
-      children: [
-        Visibility(
-          visible: expenseProvider.expenseTypeList.isEmpty ||
-              expenseProvider.expenseAmountList.isEmpty,
-          child: Expanded(
-            child: Center(
-              child: Text(
-                'There are no expenses added, yet.',
-                style: TextStyles.subHeaderTextStyle,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(7.0),
+
+    return (expenseProvider.expenseList.length != 0)
+        ? Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Align(
               alignment: Alignment.topCenter,
               child: ListView.builder(
@@ -43,26 +30,18 @@ class ExpenseListView extends StatelessWidget {
                       ),
                       key: UniqueKey(),
                       onDismissed: (direction) {
-                        //messy, bad really really bad
-                        expenseProvider.subtractFromChartMap(index);
-                        expenseProvider.removeFromAmountList(index);
-                        expenseProvider.removeFromExpenseTypeList(index);
-                        expenseProvider.removeDaySpent(index);
-                        expenseProvider.removeMonthSpent(index);
+                        expenseProvider.removeFromList(index);
                       },
                       child: expenseListBuilder(
-                          context,
-                          index,
-                          expenseProvider.expenseTypeList,
-                          expenseProvider.expenseAmountList,
-                          expenseProvider.daySpent),
+                          context, index, expenseProvider.expenseList),
                     );
                   },
-                  itemCount: expenseProvider.expenseTypeList.length),
+                  itemCount: expenseProvider.expenseList.length),
             ),
-          ),
-        ),
-      ],
-    );
+          )
+        : Text(
+            'No expenses added, yet.',
+            style: TextStyles.subHeaderTextStyle,
+          );
   }
 }

@@ -17,7 +17,7 @@
     "workbench.iconTheme": "material-icon-theme",
     "window.zoomLevel": 1,
     "editor.cursorBlinking": "solid",
-    "workbench.colorTheme": "Monokai",
+    "workbench.colorTheme": "Better Solarized Dark",
     "launch": {
         "configurations": [],
         "compounds": []
