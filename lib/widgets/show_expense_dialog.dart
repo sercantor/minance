@@ -152,17 +152,15 @@ class _ShowExpenseDialogState extends State<ShowExpenseDialog> {
                     //       '${element.daySpent}\n ${element.expenseAmount}\n ${element.id}');
                     // });
                     //TODO: parse doesn't work, 0 or negative values breaks the app
-                    //TODO: have to pass id to all functions here! but edit works
                     if (int.parse(amountController.text) > 1) {
                       expenseProvider.addToList(
-                        Expense(
-                          daySpent: dateTimeController.text,
-                          expenseAmount: int.parse(amountController.text),
-                          expenseType: expenseProvider.dropDownExpenseType,
-                          monthSpent: dateTimeController.text.substring(5, 8),
-                        ),
-                        widget.index,
-                      );
+                          Expense(
+                            daySpent: dateTimeController.text,
+                            expenseAmount: int.parse(amountController.text),
+                            expenseType: expenseProvider.dropDownExpenseType,
+                            monthSpent: dateTimeController.text.substring(5, 8),
+                          ),
+                          widget.index);
                     }
                     Navigator.pop(context);
                   },

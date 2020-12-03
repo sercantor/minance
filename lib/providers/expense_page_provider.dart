@@ -12,7 +12,9 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   String get dropDownExpenseType => _dropdownExpenseType;
-  List<Expense> get expenseList => _expenseList;
+  List<Expense> get expenseList {
+    return [..._expenseList];
+  }
 
   setDropdownExpenseType() {
     _dropdownExpenseType = 'Food';
@@ -24,10 +26,15 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   void addToList(Expense newExpense, int index) {
-    // we can edit now
-    if (!(_expenseList.every((expense) => expense.id == newExpense.id))) {
-      _expenseList[index] = newExpense;
-    } else {
+    // we can edit now, bad logic...
+    print('${newExpense.daySpent}');
+    print(index);
+    if (index != null) {
+      if (!(_expenseList.every((expense) => expense.id == newExpense.id))) {
+        _expenseList[index] = newExpense;
+      }
+    }
+    if (index == null) {
       _expenseList.add(newExpense);
     }
     notifyListeners();
