@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
     final navigationProvider = Provider.of<NavigationProvider>(context);
     final _tabs = [
       Center(child: ExpenseListView()),
-      Center(child: StatPage()),
+      Center(child: BarChartSample1()),
     ];
 
     return Scaffold(

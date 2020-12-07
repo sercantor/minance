@@ -40,8 +40,8 @@ Widget expenseListBuilder(
             ],
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             gradient: LinearGradient(
-                begin: Alignment.topRight, end: Alignment.bottomLeft,
-                // I have no idea why this is giving me an error
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
                 colors: [Colors.pink, Colors.red]),
           ),
           child: Container(
